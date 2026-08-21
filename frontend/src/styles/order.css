@@ -1,0 +1,88 @@
+@import './theme.css';
+
+.order-page {
+  min-height: 100dvh;
+  padding: 32px 20px;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.order-card {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.order-card h1 { margin: 16px 0 22px; }
+.order-back { color: var(--color-accent); font-weight: 700; text-decoration: none; }
+
+.order-item-summary {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 18px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.order-item-summary video { width: 140px; height: 180px; object-fit: cover; border-radius: 8px; background: #111; }
+.order-item-summary h2 { margin: 0 0 8px; }
+.order-item-summary p { color: var(--color-text-secondary); }
+
+.order-form { display: grid; gap: 16px; margin-top: 24px; }
+.order-form label { display: grid; gap: 7px; font-weight: 700; }
+.order-form input, .order-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 11px 12px;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+  font-size: 1.2rem;
+}
+
+.payment-note { margin: 0; color: var(--color-text-secondary); font-size: .9rem; }
+.order-submit {
+  display: inline-block;
+  border: 0;
+  border-radius: 7px;
+  padding: 12px 18px;
+  background: var(--color-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.order-submit:disabled { opacity: .65; cursor: wait; }
+.order-error { color: #b42318; }
+.order-success { text-align: center; margin-top: 8vh; }
+.success-mark { margin: 0 auto 16px; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; background: #198754; color: #fff; font-size: 2rem; }
+
+@media (max-width: 520px) {
+  .order-card { padding: 20px; }
+  .order-item-summary { grid-template-columns: 1fr; }
+  .order-item-summary video { width: 100%; height: 220px; }
+}
+
+.order-form select {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 11px 12px;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font: inherit;
+}
