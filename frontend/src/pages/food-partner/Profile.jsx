@@ -12,7 +12,7 @@ const Profile = () => {
     const [ activeReelId, setActiveReelId ] = useState(null)
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/food-partner/${id}`, { withCredentials: true })
+        axios.get(`https://feedo-wolw.onrender.com/api/food-partner/${id}`, { withCredentials: true })
             .then(response => {
                 setProfile(response.data.foodPartner)
                 setVideos(response.data.foodPartner.foodItems)
@@ -21,7 +21,7 @@ const Profile = () => {
 
     async function likeVideo(item) {
         const response = await axios.post(
-            'http://localhost:3000/api/food/like',
+            'https://feedo-wolw.onrender.com/api/food/like',
             { foodId: item._id },
             { withCredentials: true }
         )
@@ -35,7 +35,7 @@ const Profile = () => {
 
     async function saveVideo(item) {
         const response = await axios.post(
-            'http://localhost:3000/api/food/save',
+            'https://feedo-wolw.onrender.com/api/food/save',
             { foodId: item._id },
             { withCredentials: true }
         )

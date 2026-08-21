@@ -59,7 +59,7 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.',
     if (commentsByFood[item._id]) return
 
     try {
-      const response = await axios.get(`http://localhost:3000/api/food/${item._id}/comments`, { withCredentials: true })
+      const response = await axios.get(`https://feedo-wolw.onrender.com/api/food/${item._id}/comments`, { withCredentials: true })
       setCommentsByFood((previous) => ({ ...previous, [item._id]: response.data.comments }))
       setCommentCounts((previous) => ({ ...previous, [item._id]: response.data.comments.length }))
     } catch (error) {
@@ -90,8 +90,8 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.',
     try {
       const isEditing = Boolean(editingCommentId)
       const url = isEditing
-        ? `http://localhost:3000/api/food/comments/${editingCommentId}`
-        : `http://localhost:3000/api/food/${foodId}/comments`
+        ? `https://feedo-wolw.onrender.com/api/food/comments/${editingCommentId}`
+        : `https://feedo-wolw.onrender.com/api/food/${foodId}/comments`
       const response = isEditing
         ? await axios.patch(url, { text }, { withCredentials: true })
         : await axios.post(url, { text }, { withCredentials: true })
@@ -129,7 +129,7 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.',
 
   async function removeComment(foodId, commentId) {
     try {
-      await axios.delete(`http://localhost:3000/api/food/comments/${commentId}`, { withCredentials: true })
+      await axios.delete(`https://feedo-wolw.onrender.com/api/food/comments/${commentId}`, { withCredentials: true })
       setCommentsByFood((previous) => ({
         ...previous,
         [foodId]: (previous[foodId] || []).filter((comment) => comment._id !== commentId)

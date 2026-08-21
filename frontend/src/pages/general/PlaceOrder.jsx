@@ -16,7 +16,7 @@ const PlaceOrder = () => {
     const [ submitting, setSubmitting ] = useState(false);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/food', { withCredentials: true })
+        axios.get('https://feedo-wolw.onrender.com/api/food', { withCredentials: true })
             .then((response) => {
                 const selectedFood = response.data.foodItems.find((item) => item._id === foodId);
                 if (!selectedFood) throw new Error('Food item not found');
@@ -37,7 +37,7 @@ const PlaceOrder = () => {
         setError('');
         try {
             const response = await axios.post(
-                `http://localhost:3000/api/food/${food._id}/orders`,
+                `https://feedo-wolw.onrender.com/api/food/${food._id}/orders`,
                 { customerName, address, contactNumber, quantity },
                 { withCredentials: true }
             );

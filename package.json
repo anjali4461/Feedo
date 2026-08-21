@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "imagekit": "^6.0.0",
+    "uuid": "^14.0.2"
+  }
+}
