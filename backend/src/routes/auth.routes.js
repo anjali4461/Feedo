@@ -3,6 +3,8 @@ const authController = require("../controllers/auth.controller")
 
 const router = express.Router();
 
+router.get('/me', authController.getCurrentSession)
+
 // user auth APIs
 router.post('/user/register', authController.registerUser)
 router.post('/user/login', authController.loginUser)

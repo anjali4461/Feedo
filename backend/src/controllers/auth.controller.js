@@ -2,6 +2,12 @@ const userModel = require("../models/user.model")
 const foodPartnerModel = require("../models/foodpartner.model")
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const isProduction = process.env.NODE_ENV === 'production';
+const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax'
+};
 
 async function registerUser(req, res) {
 
@@ -29,7 +35,7 @@ async function registerUser(req, res) {
         id: user._id,
     }, process.env.JWT_SECRET)
 
-    res.cookie("token", token)
+    res.cookie("token", token, cookieOptions)
 
     res.status(201).json({
         message: "User registered successfully",
@@ -68,7 +74,7 @@ async function loginUser(req, res) {
         id: user._id,
     }, process.env.JWT_SECRET)
 
-    res.cookie("token", token)
+    res.cookie("token", token, cookieOptions)
 
     res.status(200).json({
         message: "User logged in successfully",
@@ -81,7 +87,7 @@ async function loginUser(req, res) {
 }
 
 function logoutUser(req, res) {
-    res.clearCookie("token");
+    res.clearCookie("token", cookieOptions);
     res.status(200).json({
         message: "User logged out successfully"
     });
@@ -117,7 +123,7 @@ async function registerFoodPartner(req, res) {
         id: foodPartner._id,
     }, process.env.JWT_SECRET)
 
-    res.cookie("token", token)
+    res.cookie("token", token, cookieOptions)
 
     res.status(201).json({
         message: "Food partner registered successfully",
@@ -159,7 +165,7 @@ async function loginFoodPartner(req, res) {
         id: foodPartner._id,
     }, process.env.JWT_SECRET)
 
-    res.cookie("token", token)
+    res.cookie("token", token, cookieOptions)
 
     res.status(200).json({
         message: "Food partner logged in successfully",
@@ -172,10 +178,43 @@ async function loginFoodPartner(req, res) {
 }
 
 function logoutFoodPartner(req, res) {
-    res.clearCookie("token");
+    res.clearCookie("token", cookieOptions);
     res.status(200).json({
         message: "Food partner logged out successfully"
     });
+}
+
+async function getCurrentSession(req, res) {
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(401).json({ message: "Not logged in" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await userModel.findById(decoded.id).select("email fullName");
+
+        if (user) {
+            return res.status(200).json({
+                type: "user",
+                account: user
+            });
+        }
+
+        const foodPartner = await foodPartnerModel.findById(decoded.id).select("email name");
+
+        if (foodPartner) {
+            return res.status(200).json({
+                type: "food-partner",
+                account: foodPartner
+            });
+        }
+
+        return res.status(401).json({ message: "Session expired" });
+    } catch (error) {
+        return res.status(401).json({ message: "Session expired" });
+    }
 }
 
 module.exports = {
@@ -184,5 +223,6 @@ module.exports = {
     logoutUser,
     registerFoodPartner,
     loginFoodPartner,
-    logoutFoodPartner
+    logoutFoodPartner,
+    getCurrentSession
 }

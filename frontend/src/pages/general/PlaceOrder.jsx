@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 import '../../styles/order.css';
 
 const PlaceOrder = () => {
@@ -16,7 +16,7 @@ const PlaceOrder = () => {
     const [ submitting, setSubmitting ] = useState(false);
 
     useEffect(() => {
-        axios.get('https://feedo-wolw.onrender.com/api/food', { withCredentials: true })
+        api.get('/api/food')
             .then((response) => {
                 const selectedFood = response.data.foodItems.find((item) => item._id === foodId);
                 if (!selectedFood) throw new Error('Food item not found');
@@ -36,10 +36,9 @@ const PlaceOrder = () => {
         setSubmitting(true);
         setError('');
         try {
-            const response = await axios.post(
-                `https://feedo-wolw.onrender.com/api/food/${food._id}/orders`,
+            const response = await api.post(
+                `/api/food/${food._id}/orders`,
                 { customerName, address, contactNumber, quantity },
-                { withCredentials: true }
             );
             navigate('/order-confirmation', { state: response.data });
         } catch (requestError) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/auth-shared.css';
-import axios from 'axios';
+import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
@@ -13,10 +13,10 @@ const UserLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    const response = await axios.post("https://feedo-wolw.onrender.com/api/auth/user/login", {
+    const response = await api.post('/api/auth/user/login', {
       email,
       password
-    }, { withCredentials: true });
+    });
 
     console.log(response.data);
 

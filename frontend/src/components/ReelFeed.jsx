@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../services/api'
 
 // Reusable feed for vertical reels
 // Props:
@@ -59,7 +59,7 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.',
     if (commentsByFood[item._id]) return
 
     try {
-      const response = await axios.get(`https://feedo-wolw.onrender.com/api/food/${item._id}/comments`, { withCredentials: true })
+      const response = await api.get(`/api/food/${item._id}/comments`)
       setCommentsByFood((previous) => ({ ...previous, [item._id]: response.data.comments }))
       setCommentCounts((previous) => ({ ...previous, [item._id]: response.data.comments.length }))
     } catch (error) {
@@ -90,11 +90,11 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.',
     try {
       const isEditing = Boolean(editingCommentId)
       const url = isEditing
-        ? `https://feedo-wolw.onrender.com/api/food/comments/${editingCommentId}`
-        : `https://feedo-wolw.onrender.com/api/food/${foodId}/comments`
+        ? `/api/food/comments/${editingCommentId}`
+        : `/api/food/${foodId}/comments`
       const response = isEditing
-        ? await axios.patch(url, { text }, { withCredentials: true })
-        : await axios.post(url, { text }, { withCredentials: true })
+        ? await api.patch(url, { text })
+        : await api.post(url, { text })
       const savedComment = response.data.comment
 
       setCommentsByFood((previous) => {
@@ -129,7 +129,7 @@ const ReelFeed = ({ items = [], onLike, onSave, emptyMessage = 'No videos yet.',
 
   async function removeComment(foodId, commentId) {
     try {
-      await axios.delete(`https://feedo-wolw.onrender.com/api/food/comments/${commentId}`, { withCredentials: true })
+      await api.delete(`/api/food/comments/${commentId}`)
       setCommentsByFood((previous) => ({
         ...previous,
         [foodId]: (previous[foodId] || []).filter((comment) => comment._id !== commentId)

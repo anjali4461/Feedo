@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/auth-shared.css';
-import axios from 'axios';
+import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerLogin = () => {
@@ -14,10 +14,10 @@ const FoodPartnerLogin = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await axios.post("https://feedo-wolw.onrender.com/api/auth/food-partner/login", {
+      const response = await api.post('/api/auth/food-partner/login', {
         email,
         password
-      }, { withCredentials: true });
+      });
 
       console.log(response.data);
       navigate("/create-food");

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import api from '../../services/api';
 import '../../styles/reels.css'
 import ReelFeed from '../../components/ReelFeed'
 import { Link } from 'react-router-dom'
@@ -10,7 +10,7 @@ const Home = () => {
     // Autoplay behavior is handled inside ReelFeed
 
     useEffect(() => {
-        axios.get("https://feedo-wolw.onrender.com/api/food", { withCredentials: true })
+        api.get('/api/food')
             .then(response => {
 
                 console.log(response.data);
@@ -30,7 +30,7 @@ const Home = () => {
 
     async function likeVideo(item) {
 
-        const response = await axios.post("https://feedo-wolw.onrender.com/api/food/like", { foodId: item._id }, {withCredentials: true})
+        const response = await api.post('/api/food/like', { foodId: item._id })
 
         if(response.data.like){
             console.log("Video liked");
@@ -43,7 +43,7 @@ const Home = () => {
     }
 
     async function saveVideo(item) {
-        const response = await axios.post("https://feedo-wolw.onrender.com/api/food/save", { foodId: item._id }, { withCredentials: true })
+        const response = await api.post('/api/food/save', { foodId: item._id })
         
         if(response.data.save){
             setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, savesCount: v.savesCount + 1 } : v))

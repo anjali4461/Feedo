@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth-shared.css';
-import axios from 'axios';
+import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerRegister = () => {
@@ -18,14 +18,14 @@ const FoodPartnerRegister = () => {
     const password = e.target.password.value;
     const address = e.target.address.value;
 
-    axios.post("https://feedo-wolw.onrender.com/api/auth/food-partner/register", {
+    api.post('/api/auth/food-partner/register', {
       name:businessName,
       contactName,
       phone,
       email,
       password,
       address
-    }, { withCredentials: true })
+    })
       .then(response => {
         console.log(response.data);
         navigate("/create-food"); // Redirect to create food page after successful registration

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../../styles/profile.css'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import api from '../../services/api'
 import ReelFeed from '../../components/ReelFeed'
 
 const Profile = () => {
@@ -12,7 +12,7 @@ const Profile = () => {
     const [ activeReelId, setActiveReelId ] = useState(null)
 
     useEffect(() => {
-        axios.get(`https://feedo-wolw.onrender.com/api/food-partner/${id}`, { withCredentials: true })
+        api.get(`/api/food-partner/${id}`)
             .then(response => {
                 setProfile(response.data.foodPartner)
                 setVideos(response.data.foodPartner.foodItems)
@@ -20,11 +20,7 @@ const Profile = () => {
     }, [ id ])
 
     async function likeVideo(item) {
-        const response = await axios.post(
-            'https://feedo-wolw.onrender.com/api/food/like',
-            { foodId: item._id },
-            { withCredentials: true }
-        )
+        const response = await api.post('/api/food/like', { foodId: item._id })
 
         setVideos((previousVideos) => previousVideos.map((video) => (
             video._id === item._id
@@ -34,11 +30,7 @@ const Profile = () => {
     }
 
     async function saveVideo(item) {
-        const response = await axios.post(
-            'https://feedo-wolw.onrender.com/api/food/save',
-            { foodId: item._id },
-            { withCredentials: true }
-        )
+        const response = await api.post('/api/food/save', { foodId: item._id })
 
         setVideos((previousVideos) => previousVideos.map((video) => (
             video._id === item._id

@@ -18,7 +18,7 @@
   margin: 0 auto;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .bottom-nav__item {
@@ -32,6 +32,13 @@
 }
 
 .bottom-nav__item.is-active { color: var(--color-text); }
+
+.bottom-nav__button {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
 
 .bottom-nav__icon { line-height: 0; }
 
